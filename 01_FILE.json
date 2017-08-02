@@ -1,0 +1,541 @@
+{
+  "124_Edge_MAKOLAB_MYD": {
+    "action": "edgemart",
+    "parameters": {
+      "alias": "MAKOLAB_MYD"
+    }
+  },
+  "122_Edge_FullSix_MYD": {
+    "action": "edgemart",
+    "parameters": {
+      "alias": "FULLSIX_MYD"
+    }
+  },
+  "127_CompFields_MAKOLAB_MYR": {
+    "action": "computeExpression",
+    "parameters": {
+      "source": "126_Edge_MAKOLAB_MYR",
+      "mergeWithSource": false,
+      "computedFields": [
+        {
+          "name": "Geo_Country",
+          "saqlExpression": "case when 'Country' == \"BY\" then \"Belarus\" when 'Country' == \"GCC\" then \"GCC\" when 'Country' == \"KZ\" then \"Kazakhstan\" when 'Country' == \"UA\" then \"Ukraine\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Geo_Region",
+          "saqlExpression": "case when 'Country' == \"BY\" then \"Eurasie\" when 'Country' == \"GCC\" then \"AMI\" when 'Country' == \"KZ\" then \"Eurasie\" when 'Country' == \"UA\" then \"Eurasie\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Geo_Cluster",
+          "saqlExpression": "case when 'Country' == \"GCC\" then \"GCC\" end",
+          "type": "Text"
+        },
+        {
+          "name": "MYR_Status",
+          "saqlExpression": "case when 'Activated' == \"Y\" then \"Activated\" when 'Activated' == \"N\" then \"Created\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Opt_In",
+          "saqlExpression": "case when 'Communication_Agreement' == \"Y\" then \"Yes\" else \"No\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Report_Date",
+          "saqlExpression": "toDate(substr('Creation_Date', 1, 4) + \"-\" + substr('Creation_Date', 5, 2) + \"-\" + substr('Creation_Date', 7, 2), \"yyyy-MM-dd\")",
+          "format": "yyyy-MM-dd",
+          "type": "Date"
+        },
+        {
+          "name": "Vehicle_Status",
+          "saqlExpression": "case when 'End_of_ownership_date' is null then \"Active\" else \"Inactive\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Vehicle_My_Garage_Status",
+          "saqlExpression": "case when 'Car_IsDeleted' == \"N\" then \"confirmed\" when 'Car_IsDeleted' == \"Y\" then \"deleted\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Account_Source",
+          "saqlExpression": "case when 'Source' == \"Customer\" then \"User\" when 'Source' == \"Admin\" then \"MYR_Team\" when 'Source' == \"Dealer\" then \"Dealer\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Acc_Sub_Source",
+          "saqlExpression": "case when 'Source' == \"Customer\" then \"Web\" when 'Source' == \"Admin\" then \"Admin\" when 'Source' == \"Dealer\" then \"Campaign\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Account_Sub_Sub_Source",
+          "saqlExpression": "case when 'Source' == \"Customer\" then \"Standard\" when 'Source' == \"Admin\" then \"Standard\" when 'Source' == \"Dealer\" then \"DMS\" end",
+          "type": "Text"
+        }
+      ]
+    }
+  },
+  "109_Register_Account": {
+    "action": "sfdcRegister",
+    "parameters": {
+      "name": "MYR Accounts",
+      "alias": "MYR_Accounts",
+      "source": "103_Aug_Account_VR"
+    }
+  },
+  "140_Append_MYR_Accounts": {
+    "action": "append",
+    "parameters": {
+      "sources": [
+        "121_CompFields_FullSix_MYR",
+        "127_CompFields_MAKOLAB_MYR",
+        "131_CompFields_Edge_MYR_Accounts"
+      ]
+    }
+  },
+  "125_CompFields_MAKOLAB_MYD": {
+    "action": "computeExpression",
+    "parameters": {
+      "source": "124_Edge_MAKOLAB_MYD",
+      "mergeWithSource": false,
+      "computedFields": [
+        {
+          "name": "Geo_Country",
+          "saqlExpression": "case when 'Country' == \"Maroc\" then \"Morocco\" when 'Country' == \"UK\" then \"UK\" when 'Country' == \"AlgÈrie\" then \"Algeria\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Geo_Region",
+          "saqlExpression": "case when 'Country' == \"Maroc\" then \"AMI\" when 'Country' == \"UK\" then \"Europe G9\" when 'Country' == \"AlgÈrie\" then \"AMI\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Geo_Cluster",
+          "saqlExpression": "case when 'Country' == \"UK\" then \"North\" end",
+          "type": "Text"
+        },
+        {
+          "name": "MYR_Status",
+          "saqlExpression": "case when 'Activated' == \"Y\" then \"Activated\" when 'Activated' == \"N\" then \"Created\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Opt_In",
+          "saqlExpression": "case when 'Communication_Agreement' == \"Y\" then \"Yes\" else \"No\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Report_Date",
+          "saqlExpression": "toDate(substr('Creation_Date', 1, 4) + \"-\" + substr('Creation_Date', 5, 2) + \"-\" + substr('Creation_Date', 7, 2), \"yyyy-MM-dd\")",
+          "format": "yyyy-MM-dd",
+          "type": "Date"
+        },
+        {
+          "name": "Vehicle_Status",
+          "saqlExpression": "case when 'End_of_ownership_date' is null then \"Active\" else \"Inactive\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Vehicle_My_Garage_Status",
+          "saqlExpression": "case when 'Car_IsDeleted' == \"N\" then \"confirmed\" when 'Car_IsDeleted' == \"Y\" then \"deleted\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Account_Source",
+          "saqlExpression": "case when 'Registration_type' == \"Standard\" then \"User\" when 'Registration_type' == \"Adobe Campaign\" then \"MYR_Team\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Acc_Sub_Source",
+          "saqlExpression": "case when 'Registration_type' == \"Standard\" then \"Web\" when 'Registration_type' == \"Adobe Campaign\" then \"Campaign\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Account_Sub_Sub_Source",
+          "saqlExpression": "case when 'Registration_type' == \"Standard\" then \"Standard\" when 'Registration_type' == \"Adobe Campaign\" then \"Welcome Email\" end",
+          "type": "Text"
+        }
+      ]
+    }
+  },
+  "130_Edge_MYR_Accounts": {
+    "action": "edgemart",
+    "parameters": {
+      "alias": "MYR_Accounts"
+    }
+  },
+  "151_Reg_MYD_Accounts_Combined": {
+    "action": "sfdcRegister",
+    "parameters": {
+      "name": "MYD_Accounts_Combined",
+      "alias": "MYD_Accounts_Combined",
+      "source": "141_Append_MYD_Accounts"
+    }
+  },
+  "141_Append_MYD_Accounts": {
+    "action": "append",
+    "parameters": {
+      "sources": [
+        "123_CompFields_FullSix_MYD",
+        "125_CompFields_MAKOLAB_MYD"
+      ]
+    }
+  },
+  "101_CompFields_Account": {
+    "action": "computeExpression",
+    "parameters": {
+      "source": "101_Filter_Account",
+      "mergeWithSource": true,
+      "computedFields": [
+        {
+          "name": "Optin",
+          "saqlExpression": "case when 'Address__pc' == \"Yes\" then \"Yes\" when 'PersEmail__pc' == \"Yes\" then \"Yes\" when 'PersMobiPhone__pc' == \"Yes\" then \"Yes\" when 'SMS__pc' == \"Yes\" then \"Yes\" else \"No\" end",
+          "type": "Text"
+        },
+        {
+          "name": "ReportDate",
+          "saqlExpression": "case when 'MYR_Status__c' == \"Preregistered\" then toDate(CreatedDate_Day + \"/\" + CreatedDate_Month + \"/\" + CreatedDate_Year, \"dd/MM/yyyy\") else toDate(MYR_CreationDate__c_Day + \"/\" + MYR_CreationDate__c_Month + \"/\" + MYR_CreationDate__c_Year, \"dd/MM/yyyy\") end",
+          "format": "dd-MM-yyyy",
+          "type": "Date"
+        },
+        {
+          "name": "Region",
+          "saqlExpression": "case when 'Country__c' == \"Germany\" || 'Country__c' == \"Germany2\" || 'Country__c' == \"Belgium\" || 'Country__c' == \"Luxembourg\" || 'Country__c' == \"Croatia\"  || 'Country__c' == \"Czech Republic\" || 'Country__c' == \"Denmark\"  || 'Country__c' == \"Hungary\" || 'Country__c' == \"Ireland\"  || 'Country__c' == \"Italy\" || 'Country__c' == \"Poland\"  || 'Country__c' == \"Portugal\" || 'Country__c' == \"Serbia\"|| 'Country__c' == \"Slovakia\"  || 'Country__c' == \"Slovenia\" || 'Country__c' == \"Spain\" || 'Country__c' == \"Switzerland\" || 'Country__c' == \"UK\" then \"Europe G9\" when 'Country__c' == \"France\" then \"France\" when 'Country__c' == \"Turkey\" || 'Country__c' == \"Romania\" then \"Eurasie\" when 'Country__c' == \"Algeria\" || 'Country__c' == \"Morocco\"  || 'Country__c' == \"India\" then \"AMI\" when 'Country__c' == \"Argentina\"  || 'Country__c' == \"Mexico\" || 'Country__c' == \"Colombia\" then \"America\" when 'Country__c' == \"Australia\" then \"Asia Pacific\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Cluster",
+          "saqlExpression": "case when 'Country__c' == \"Belgium\" || 'Country__c' == \"Luxembourg\" then \"Benelux\" when 'Country__c' == \"Croatia\" || 'Country__c' == \"Slovenia\" || 'Country__c' == \"Serbia\" then \"Adriatics\" when 'Country__c' == \"Czech Republic\" || 'Country__c' == \"Hungary\" || 'Country__c' == \"Slovakia\" || 'Country__c' == \"Poland\"  then \"East\" when 'Country__c' == \"Denmark\" then \"Nordic\" when 'Country__c' == \"Ireland\" || 'Country__c' == \"UK\" then \"North\" when 'Country__c' == \"Portugal\" || 'Country__c' == \"Spain\" then \"Iberia\" when 'Country__c' == \"Switzerland\" then \"Central\" when 'Country__c' == \"Germany\" || 'Country__c' == \"Germany2\" then \"Germany\" when 'Country__c' == \"Italy\" then \"Italy\" end",
+          "type": "Text"
+        }
+      ]
+    }
+  },
+  "102_Extract_Vehicle_Relation": {
+    "action": "sfdcDigest",
+    "parameters": {
+      "fields": [
+        {
+          "name": "Id"
+        },
+        {
+          "name": "My_Garage_Status__c"
+        },
+        {
+          "name": "Status__c"
+        },
+        {
+          "name": "Model__c"
+        },
+        {
+          "name": "VNVO__c"
+        },
+        {
+          "name": "StatusDate__c"
+        },
+        {
+          "name": "Account__c"
+        }
+      ],
+      "object": "VRE_VehRel__c"
+    }
+  },
+  "102_Filter_VR": {
+    "action": "filter",
+    "parameters": {
+      "filter": "My_Garage_Status__c:EQ:confirmed,Status__c:EQ:Active",
+      "source": "102_Extract_Vehicle_Relation"
+    }
+  },
+  "123_CompFields_FullSix_MYD": {
+    "action": "computeExpression",
+    "parameters": {
+      "source": "122_Edge_FullSix_MYD",
+      "mergeWithSource": false,
+      "computedFields": [
+        {
+          "name": "Geo_Country",
+          "saqlExpression": "case when 'Country' == \"France\" then \"France\" when 'Country' == \"POLOGNE\" then \"Poland\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Geo_Region",
+          "saqlExpression": "case when 'Country' == \"France\" then \"France\" when 'Country' == \"POLOGNE\" then \"Europe G9\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Geo_Cluster",
+          "saqlExpression": "case when 'Country' == \"POLOGNE\" then \"East\" end",
+          "type": "Text"
+        },
+        {
+          "name": "MYR_Status",
+          "saqlExpression": "case when 'Activated_MYR' == \"1\" then \"Activated\" when 'Activated_MYR' == \"0\" then \"Created\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Opt_In",
+          "saqlExpression": "case when 'Communication_agreement' == \"1\" then \"Yes\" else \"No\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Report_Date",
+          "saqlExpression": "toDate(substr('Creation_Date_C', 1, 4) + \"-\" + substr('Creation_Date_C', 5, 2) + \"-\" + substr('Creation_Date_C', 7, 2), \"yyyy-MM-dd\")",
+          "format": "yyyy-MM-dd",
+          "type": "Date"
+        },
+        {
+          "name": "Vehicle_Status",
+          "saqlExpression": "case when 'Relationship_end_date' is null then \"Active\" else \"Inactive\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Vehicle_My_Garage_Status",
+          "saqlExpression": "case when 'VField9_MYR' == \"vehicle.delete.reason.takenByOtherUser\" then \"taken\" when 'VField9_MYR' is null then \"confirmed\" else \"rejected\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Account_Source",
+          "saqlExpression": "case when 'Subscription_Type_MYR' == \"DEALER_SUBSCRIPTION\" || 'Subscription_Type_MYR' == \"FOLLOW_ORDER\" || 'Subscription_Type_MYR' == \"WELCOME_PACK\" then \"Dealer\" when 'Subscription_Type_MYR' == \"NEOLANE\" || 'Subscription_Type_MYR' == \"EMAIL\" || 'Subscription_Type_MYR' == \"IMPORT_GDC\" then \"MYR_Team\" when 'Subscription_Type_MYR' == \"WELCOME_CALL\" then \"Customer Services\"  else \"User\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Acc_Sub_Source",
+          "saqlExpression": "case when ('Subscription_Type_MYR' == \"NORMAL\" && ('CField3_MYR' matches \"jeu\" || 'CField3_MYR' matches \"enews\")) || 'Subscription_Type_MYR' == \"GAME\" || 'Subscription_Type_MYR' == \"DEALER_SUBSCRIPTION\" || 'Subscription_Type_MYR' == \"NEOLANE\" || 'Subscription_Type_MYR' == \"EMAIL\" || 'Subscription_Type_MYR' == \"FOLLOW_ORDER\" || 'Subscription_Type_MYR' == \"IMPORT_GDC\" || 'Subscription_Type_MYR' == \"WELCOME_CALL\" || 'Subscription_Type_MYR' == \"WELCOME_PACK\" then \"Campaign\" when 'Subscription_Type_MYR' == \"APP_IOS\" || 'Subscription_Type_MYR' == \"APP_ANDROID\" then \"App\" else \"Web\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Account_Sub_Sub_Source",
+          "saqlExpression": "case when ('Subscription_Type_MYR' == \"NORMAL\" && 'CField3_MYR' matches \"jeu\") || 'Subscription_Type_MYR' == \"GAME\" then \"Game\" when ('Subscription_Type_MYR' == \"NORMAL\" && 'CField3_MYR' matches \"enews\") then \"Newsletter\" when 'Subscription_Type_MYR' == \"DEALER_SUBSCRIPTION\" then \"DMS\" when 'Subscription_Type_MYR' == \"APP_IOS\" then \"iOS\" when 'Subscription_Type_MYR' == \"APP_ANDROID\" then \"Android\" when 'Subscription_Type_MYR' == \"NEOLANE\" then \"Workshop Visit\" when 'Subscription_Type_MYR' == \"DISCOVERED\" then \"Discovered\" when 'Subscription_Type_MYR' == \"RSHOP\" || 'Subscription_Type_MYR' == \"IMPORT_GDC\" || 'Subscription_Type_MYR' == \"TOPRENAULT\" || 'Subscription_Type_MYR' == \"VO\" || 'Subscription_Type_MYR' == \"RTB\" || 'Subscription_Type_MYR' == \"CONTRACT_SERVICE\" || 'Subscription_Type_MYR' == \"DWS_VN\" || 'Subscription_Type_MYR' == \"DWS_VO\" then \"Migration\" when 'Subscription_Type_MYR' == \"QUOTE_ONLINE\" then \"Quote online\" when 'Subscription_Type_MYR' == \"EMAIL\" then \"Welcome Email\" when 'Subscription_Type_MYR' == \"FOLLOW_ORDER\" then \"Welcome Order\" when 'Subscription_Type_MYR' == \"WELCOME_CALL\" then \"Welcome Call\" when 'Subscription_Type_MYR' == \"WELCOME_PACK\" then \"Welcome Pack\" else \"Standard\" end",
+          "type": "Text"
+        }
+      ]
+    }
+  },
+  "101_Filter_Account": {
+    "action": "filter",
+    "parameters": {
+      "filter": "MYR_Status__c:EQ:Created|Activated|Deleted|Preregistered",
+      "source": "101_Extract_Account"
+    }
+  },
+  "150_Reg_MYR_Accounts_Combined": {
+    "action": "sfdcRegister",
+    "parameters": {
+      "name": "MYR_Accounts_Combined",
+      "alias": "MYR_Accounts_Combined",
+      "source": "140_Append_MYR_Accounts"
+    }
+  },
+  "121_CompFields_FullSix_MYR": {
+    "action": "computeExpression",
+    "parameters": {
+      "source": "120_Edge_FullSix_MYR",
+      "mergeWithSource": false,
+      "computedFields": [
+        {
+          "name": "Geo_Country",
+          "saqlExpression": "case when 'Country' == \"MA\" then \"Morocco\" when 'Country' == \"PT\" then \"Portugal\" when 'Country' == \"ES\" then \"Spain\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Geo_Region",
+          "saqlExpression": "case when 'Country' == \"MA\" then \"AMI\" when 'Country' == \"PT\" then \"Europe G9\" when 'Country' == \"ES\" then \"Europe G9\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Geo_Cluster",
+          "saqlExpression": "case when 'Country' == \"PT\" then \"Iberia\" when 'Country' == \"ES\" then \"Iberia\" end",
+          "type": "Text"
+        },
+        {
+          "name": "MYR_Status",
+          "saqlExpression": "case when 'Activated_MYR' == \"1\" then \"Activated\" when 'Activated_MYR' == \"0\" then \"Created\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Opt_In",
+          "saqlExpression": "case when 'Communication_agreement' == \"1\" then \"Yes\" else \"No\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Report_Date",
+          "saqlExpression": "toDate(substr('Creation_Date_C', 1, 4) + \"-\" + substr('Creation_Date_C', 5, 2) + \"-\" + substr('Creation_Date_C', 7, 2), \"yyyy-MM-dd\")",
+          "format": "yyyy-MM-dd",
+          "type": "Date"
+        },
+        {
+          "name": "Vehicle_Status",
+          "saqlExpression": "case when 'Relationship_end_date' is null then \"Active\" else \"Inactive\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Vehicle_My_Garage_Status",
+          "saqlExpression": "case when 'MYR_Vehicle_Delete_Label' == \"vehicle.delete.reason.takenByOtherUser\" then \"taken\" when 'MYR_Vehicle_Delete_Label' is null then \"confirmed\" else \"rejected\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Account_Source",
+          "saqlExpression": "case when 'Subscription_Type_MYR' == \"DEALER_SUBSCRIPTION\" || 'Subscription_Type_MYR' == \"FOLLOW_ORDER\" || 'Subscription_Type_MYR' == \"WELCOME_PACK\" then \"Dealer\" when 'Subscription_Type_MYR' == \"NEOLANE\" || 'Subscription_Type_MYR' == \"EMAIL\" || 'Subscription_Type_MYR' == \"IMPORT_GDC\" then \"MYR_Team\" when 'Subscription_Type_MYR' == \"WELCOME_CALL\" then \"Customer Services\"  else \"User\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Acc_Sub_Source",
+          "saqlExpression": "case when ('Subscription_Type_MYR' == \"NORMAL\" && ('SubType_Inscription' matches \"jeu\" || 'SubType_Inscription' matches \"enews\")) || 'Subscription_Type_MYR' == \"GAME\" || 'Subscription_Type_MYR' == \"DEALER_SUBSCRIPTION\" || 'Subscription_Type_MYR' == \"NEOLANE\" || 'Subscription_Type_MYR' == \"EMAIL\" || 'Subscription_Type_MYR' == \"FOLLOW_ORDER\" || 'Subscription_Type_MYR' == \"IMPORT_GDC\" || 'Subscription_Type_MYR' == \"WELCOME_CALL\" || 'Subscription_Type_MYR' == \"WELCOME_PACK\" then \"Campaign\" when 'Subscription_Type_MYR' == \"APP_IOS\" || 'Subscription_Type_MYR' == \"APP_ANDROID\" then \"App\" else \"Web\" end",
+          "type": "Text"
+        },
+        {
+          "name": "Account_Sub_Sub_Source",
+          "saqlExpression": "case when ('Subscription_Type_MYR' == \"NORMAL\" && 'SubType_Inscription' matches \"jeu\") || 'Subscription_Type_MYR' == \"GAME\" then \"Game\" when ('Subscription_Type_MYR' == \"NORMAL\" && 'SubType_Inscription' matches \"enews\") then \"Newsletter\" when 'Subscription_Type_MYR' == \"DEALER_SUBSCRIPTION\" then \"DMS\" when 'Subscription_Type_MYR' == \"APP_IOS\" then \"iOS\" when 'Subscription_Type_MYR' == \"APP_ANDROID\" then \"Android\" when 'Subscription_Type_MYR' == \"NEOLANE\" then \"Workshop Visit\" when 'Subscription_Type_MYR' == \"DISCOVERED\" then \"Discovered\" when 'Subscription_Type_MYR' == \"RSHOP\" || 'Subscription_Type_MYR' == \"IMPORT_GDC\" || 'Subscription_Type_MYR' == \"TOPRENAULT\" || 'Subscription_Type_MYR' == \"VO\" || 'Subscription_Type_MYR' == \"RTB\" || 'Subscription_Type_MYR' == \"CONTRACT_SERVICE\" || 'Subscription_Type_MYR' == \"DWS_VN\" || 'Subscription_Type_MYR' == \"DWS_VO\" then \"Migration\" when 'Subscription_Type_MYR' == \"QUOTE_ONLINE\" then \"Quote online\" when 'Subscription_Type_MYR' == \"EMAIL\" then \"Welcome Email\" when 'Subscription_Type_MYR' == \"FOLLOW_ORDER\" then \"Welcome Order\" when 'Subscription_Type_MYR' == \"WELCOME_CALL\" then \"Welcome Call\" when 'Subscription_Type_MYR' == \"WELCOME_PACK\" then \"Welcome Pack\" else \"Standard\" end",
+          "type": "Text"
+        }
+      ]
+    }
+  },
+  "126_Edge_MAKOLAB_MYR": {
+    "action": "edgemart",
+    "parameters": {
+      "alias": "MAKOLAB_MYR"
+    }
+  },
+  "131_CompFields_Edge_MYR_Accounts": {
+    "action": "computeExpression",
+    "parameters": {
+      "source": "130_Edge_MYR_Accounts",
+      "mergeWithSource": false,
+      "computedFields": [
+        {
+          "name": "Geo_Country",
+          "saqlExpression": "'Country__c'",
+          "type": "Text"
+        },
+        {
+          "name": "Geo_Region",
+          "saqlExpression": "'Region'",
+          "type": "Text"
+        },
+        {
+          "name": "Geo_Cluster",
+          "saqlExpression": "'Cluster'",
+          "type": "Text"
+        },
+        {
+          "name": "MYR_Status",
+          "saqlExpression": "'MYR_Status__c'",
+          "type": "Text"
+        },
+        {
+          "name": "Opt_In",
+          "saqlExpression": "'Optin'",
+          "type": "Text"
+        },
+        {
+          "name": "Report_Date",
+          "saqlExpression": "toDate(ReportDate_Day + \"/\" + ReportDate_Month + \"/\" + ReportDate_Year, \"dd/MM/yyyy\")",
+          "format": "dd-MM-yyyy",
+          "type": "Date"
+        },
+        {
+          "name": "Vehicle_Status",
+          "saqlExpression": "'Vehicle.Status__c'",
+          "type": "Text"
+        },
+        {
+          "name": "Vehicle_My_Garage_Status",
+          "saqlExpression": "'Vehicle.My_Garage_Status__c'",
+          "type": "Text"
+        },
+        {
+          "name": "Account_Source",
+          "saqlExpression": "'AccountSource'",
+          "type": "Text"
+        },
+        {
+          "name": "Acc_Sub_Source",
+          "saqlExpression": "'AccSubSource__c'",
+          "type": "Text"
+        },
+        {
+          "name": "Account_Sub_Sub_Source",
+          "saqlExpression": "'Account_Sub_Sub_Source__c'",
+          "type": "Text"
+        }
+      ]
+    }
+  },
+  "103_Aug_Account_VR": {
+    "action": "augment",
+    "parameters": {
+      "right_key": [
+        "Account__c"
+      ],
+      "left": "101_CompFields_Account",
+      "left_key": [
+        "Id"
+      ],
+      "right_select": [
+        "My_Garage_Status__c",
+        "Status__c",
+        "Model__c",
+        "Id",
+        "VNVO__c",
+        "StatusDate__c"
+      ],
+      "right": "102_Filter_VR",
+      "relationship": "Vehicle",
+      "operation": "LookupSingleValue"
+    }
+  },
+  "120_Edge_FullSix_MYR": {
+    "action": "edgemart",
+    "parameters": {
+      "alias": "FULLSIX_MYR"
+    }
+  },
+  "101_Extract_Account": {
+    "action": "sfdcDigest",
+    "parameters": {
+      "incremental": true,
+      "fields": [
+        {
+          "name": "Id"
+        },
+        {
+          "name": "Country__c"
+        },
+        {
+          "name": "MYR_CreationDate__c"
+        },
+        {
+          "name": "MYR_Status__c"
+        },
+        {
+          "name": "AccountSource"
+        },
+        {
+          "name": "AccSubSource__c"
+        },
+        {
+          "name": "Account_Sub_Sub_Source__c"
+        },
+        {
+          "name": "Address__pc"
+        },
+        {
+          "name": "PersEmail__pc"
+        },
+        {
+          "name": "PersMobiPhone__pc"
+        },
+        {
+          "name": "SMS__pc"
+        },
+        {
+          "name": "CreatedDate"
+        }
+      ],
+      "object": "Account"
+    }
+  }
+}
