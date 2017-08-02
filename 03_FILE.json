@@ -36,10 +36,44 @@
       ]
     }
   },
+  "ComExp_UpToDate": {
+    "action": "computeExpression",
+    "parameters": {
+      "source": "ComExp_today",
+      "mergeWithSource": true,
+      "computedFields": [
+        {
+          "name": "LastModifiedToday",
+          "saqlExpression": "case today_day_epoch - LastModifiedDate_day_epoch when 0 then \"Y\"  else \"N\" end",
+          "scale": 0,
+          "label": "LastModifiedToday",
+          "type": "Text"
+        }
+      ]
+    }
+  },
+
+  "ComExp_UpToDate2": {
+    "action": "computeExpression",
+    "parameters": {
+      "source": "ComExp_UpToDate",
+      "mergeWithSource": true,
+      "computedFields": [
+        {
+          "name": "CreatedToday",
+          "saqlExpression": "case today_day_epoch - CreatedDate_day_epoch when 0 then \"Y\"  else \"N\" end",
+          "scale": 0,
+          "label": "CreatedToday",
+          "type": "Text"
+        }
+      ]
+    }
+  },
+
   "sfdcReg1": {
     "action": "sfdcRegister",
     "parameters": {
-      "source": "sfdcExtract",
+      "source": "ComExp_UpToDate2",
       "alias": "objectDestination",
       "name": "objectDestination",
       "rowLevelSecurityFilter": ""
