@@ -1,0 +1,96 @@
+{
+  "Extract_UserTrend": {
+    "action": "edgemart",
+    "parameters": {
+      "alias": "UserTrend"
+    }
+  },
+  "01_8_RegisterUser": {
+    "action": "sfdcRegister",
+    "parameters": {
+      "name": "UserTrend",
+      "alias": "UserTrend",
+      "source": "Append_usertrend"
+    }
+  },
+  "ComExp_today": {
+    "action": "computeExpression",
+    "parameters": {
+      "source": "01_1_extractUser",
+      "mergeWithSource": true,
+      "computedFields": [
+        {
+          "name": "today",
+          "format": "dd/MM/yyyy",
+          "saqlExpression": "now()",
+          "label": "now",
+          "type": "Date"
+        }
+      ]
+    }
+  },
+  "ComExp_UpToDate": {
+    "action": "computeExpression",
+    "parameters": {
+      "source": "ComExp_today",
+      "mergeWithSource": true,
+      "computedFields": [
+        {
+          "name": "u2d",
+          "saqlExpression": "case today_day_epoch - LastLoginDate_day_epoch when 1 then \"Y\"  else \"N\" end",
+          "scale": 0,
+          "label": "u2d",
+          "type": "Text"
+        }
+      ]
+    }
+  },
+  "Filter_yesterday": {
+    "action": "filter",
+    "parameters": {
+      "filter": "u2d:EQ:Y",
+      "source": "ComExp_UpToDate"
+    }
+  },
+  "Append_usertrend": {
+    "action": "append",
+    "parameters": {
+      "sources": [
+        "Extract_UserTrend",
+        "Filter_yesterday"
+      ]
+    }
+  },
+  "01_1_extractUser": {
+    "action": "sfdcDigest",
+    "parameters": {
+      "fields": [
+        {
+          "name": "Name"
+        },
+        {
+          "name": "Id"
+        },
+        {
+          "name": "Country_Code__c"
+        },
+        {
+          "name": "UserType__c"
+        },
+        {
+          "name": "ContactId"
+        },
+        {
+          "name": "FederationIdentifier"
+        },
+        {
+          "name": "LastLoginDate"
+        },
+        {
+          "name": "Alias"
+        }
+      ],
+      "object": "User"
+    }
+  }
+}
