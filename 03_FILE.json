@@ -1,0 +1,48 @@
+{
+  "sfdcExtract": {
+    "action": "sfdcDigest",
+    "parameters": {
+      "fields": [
+        {
+          "name": "D1__c"
+        },
+        {
+          "name": "LastModifiedDate"
+        },
+        {
+          "name": "CreatedDate"
+        },
+        {
+          "name": "Name"
+        }
+      ],
+      "object": "O1__c"
+    }
+  },
+
+  "ComExp_today": {
+    "action": "computeExpression",
+    "parameters": {
+      "source": "sfdcExtract",
+      "mergeWithSource": true,
+      "computedFields": [
+        {
+          "name": "today",
+          "format": "dd/MM/yyyy",
+          "saqlExpression": "now()",
+          "label": "now",
+          "type": "Date"
+        }
+      ]
+    }
+  },
+  "sfdcReg1": {
+    "action": "sfdcRegister",
+    "parameters": {
+      "source": "sfdcExtract",
+      "alias": "objectDestination",
+      "name": "objectDestination",
+      "rowLevelSecurityFilter": ""
+    }
+  }
+}
