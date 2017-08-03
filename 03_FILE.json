@@ -44,7 +44,7 @@
       "computedFields": [
         {
           "name": "LastModifiedToday",
-          "saqlExpression": "case today_day_epoch - LastModifiedDate_day_epoch when 0 then \"Y\"  else \"N\" end",
+          "saqlExpression": "case today_year_epoch == CreatedDate_year_epoch && today_month_epoch == CreatedDate_month_epoch && today_day_epoch - LastModifiedDate_day_epoch when 0 then \"Y\"  else \"N\" end",
           "scale": 0,
           "label": "LastModifiedToday",
           "type": "Text"
@@ -61,7 +61,7 @@
       "computedFields": [
         {
           "name": "CreatedToday",
-          "saqlExpression": "case today_day_epoch - CreatedDate_day_epoch when 0 then \"Y\"  else \"N\" end",
+          "saqlExpression": "case today_year_epoch == CreatedDate_year_epoch && today_month_epoch == CreatedDate_month_epoch && today_day_epoch - CreatedDate_day_epoch when 0 then \"Y\"  else \"N\" end",
           "scale": 0,
           "label": "CreatedToday",
           "type": "Text"
