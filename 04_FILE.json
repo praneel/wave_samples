@@ -1,0 +1,30 @@
+{
+  "OppOutput": {
+    "action": "sfdcRegister",
+    "parameters": {
+      "rowLevelSharingSource": "Opportunity",
+      "name": "OpportunityDataset",
+      "alias": "OpportunityDataset",
+      "source": "OppDataset"
+    }
+  },
+  "OppDataset": {
+    "action": "sfdcDigest",
+    "parameters": {
+      "refresh": "",
+      "incremental": true,
+      "fields": [
+        {
+          "name": "Id"
+        },
+        {
+          "name": "Country__c"
+        },
+        {
+          "name": "LeadSource"
+        }
+      ],
+      "object": "Opportunity"
+    }
+  }
+}
