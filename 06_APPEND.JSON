@@ -1,0 +1,32 @@
+{
+   "Extract_SalesTargets_2014Jan": {
+      "action": "edgemart",
+      "parameters": { "alias": "SalesTargets_2014Jan" }
+   },
+   "Extract_SalesTargets_2014Feb": {
+      "action": "edgemart",
+      "parameters": { "alias": "SalesTargets_2014Feb" }
+   },
+   "Extract_SalesTargets_2014Mar": {
+      "action": "edgemart",
+      "parameters": { "alias": "SalesTargets_2014Mar" }
+   },
+   "Append_SalesTargets_2014Quarter1": {
+      "action": "append",
+      "parameters": {
+         "sources": [
+            "Extract_SalesTargets_2014Jan",
+            "Extract_SalesTargets_2014Feb",
+            "Extract_SalesTargets_2014Mar"
+         ]
+      }
+   },
+   "Register_AllSalesTargets": {
+      "action": "sfdcRegister",
+      "parameters": {
+         "alias": "AllSalesTargets",
+         "name": "AllSalesTargets",
+         "source": "Append_SalesTargets_2014Quarter1"
+      }
+   }
+}
