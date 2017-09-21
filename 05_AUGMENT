@@ -1,0 +1,50 @@
+{
+    "Extract_Opportunity": {
+        "action": "sfdcDigest",
+        "parameters": {
+            "object": "Opportunity",
+            "fields": [
+                { "name": "Id" },
+                { "name": "Name" },
+                { "name": "Amount" },
+                { "name": "StageName" },
+                { "name": "CloseDate" },
+                { "name": "AccountId" },
+                { "name": "OwnerId" }
+            ]
+        }
+    },
+    "Extract_AccountDetails": {
+          "action": "sfdcDigest",
+          "parameters": {
+              "object": "Account",
+              "fields": [
+                  { "name": "Id" },
+                  { "name": "Name" }
+              ]
+          }
+    },
+    "Augment_OpportunitiesWithAccountDetails": {
+        "action": "augment",
+        "parameters": {
+            "operation": "LookupSingleValue",
+            "left": "Extract_Opportunity",
+            "left_key": [
+                "AccountId"
+            ],
+            "relationship": "OpptyAcct",
+            "right": "Extract_AccountDetails",
+            "right_key": [
+                "Id"
+            ],
+            "right_select": [ "Name" ]
+        }
+    },
+    "Register_OpportunityDetails": {
+        "action": "sfdcRegister",
+        "parameters": {
+            "alias": "Opportunity_Account",
+            "name": "Opportunity_Account",
+            "source": "Augment_OpportunitiesWithAccountDetails" }
+    }
+}
